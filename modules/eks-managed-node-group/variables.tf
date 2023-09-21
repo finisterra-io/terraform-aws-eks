@@ -20,6 +20,12 @@ variable "platform" {
 # User Data
 ################################################################################
 
+variable "user_data" {
+  description = "Base64 encoded user data rendered for the provided inputs"
+  type       = string
+  default    = null
+}
+
 variable "enable_bootstrap_user_data" {
   description = "Determines whether the bootstrap configurations are populated within the user data template. Only valid when using a custom AMI via `ami_id`"
   type        = bool
@@ -485,3 +491,5 @@ variable "schedules" {
   type        = map(any)
   default     = {}
 }
+
+

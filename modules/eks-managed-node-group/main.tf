@@ -5,24 +5,24 @@ data "aws_caller_identity" "current" {}
 # User Data
 ################################################################################
 
-module "user_data" {
-  source = "../_user_data"
+# module "user_data" {
+#   source = "../_user_data"
 
-  create   = var.create
-  platform = var.platform
+#   create   = var.create
+#   platform = var.platform
 
-  cluster_name        = var.cluster_name
-  cluster_endpoint    = var.cluster_endpoint
-  cluster_auth_base64 = var.cluster_auth_base64
+#   cluster_name        = var.cluster_name
+#   cluster_endpoint    = var.cluster_endpoint
+#   cluster_auth_base64 = var.cluster_auth_base64
 
-  cluster_service_ipv4_cidr = var.cluster_service_ipv4_cidr
+#   cluster_service_ipv4_cidr = var.cluster_service_ipv4_cidr
 
-  enable_bootstrap_user_data = var.enable_bootstrap_user_data
-  pre_bootstrap_user_data    = var.pre_bootstrap_user_data
-  post_bootstrap_user_data   = var.post_bootstrap_user_data
-  bootstrap_extra_args       = var.bootstrap_extra_args
-  user_data_template_path    = var.user_data_template_path
-}
+#   enable_bootstrap_user_data = var.enable_bootstrap_user_data
+#   pre_bootstrap_user_data    = var.pre_bootstrap_user_data
+#   post_bootstrap_user_data   = var.post_bootstrap_user_data
+#   bootstrap_extra_args       = var.bootstrap_extra_args
+#   user_data_template_path    = var.user_data_template_path
+# }
 
 ################################################################################
 # Launch template
@@ -279,7 +279,8 @@ resource "aws_launch_template" "this" {
   }
 
   update_default_version = var.update_launch_template_default_version
-  user_data              = module.user_data.user_data
+  # user_data              = module.user_data.user_data
+  user_data              = var.user_data
   vpc_security_group_ids = length(var.network_interfaces) > 0 ? [] : local.security_group_ids
 
   tags = var.tags

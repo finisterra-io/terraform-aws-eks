@@ -43,7 +43,7 @@ resource "aws_launch_template" "this" {
       device_name = try(block_device_mappings.value.device_name, null)
 
       dynamic "ebs" {
-        for_each = try([block_device_mappings.value.ebs], [])
+        for_each = try(block_device_mappings.value.ebs, [])
 
         content {
           delete_on_termination = try(ebs.value.delete_on_termination, null)

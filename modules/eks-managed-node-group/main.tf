@@ -270,7 +270,7 @@ resource "aws_launch_template" "this" {
   ram_disk_id = var.ram_disk_id
 
   dynamic "tag_specifications" {
-    for_each = toset(var.tag_specifications)
+    for_each = var.tag_specifications
 
     content {
       resource_type = tag_specifications.value.resource_type

@@ -276,14 +276,14 @@ variable "private_dns_name_options" {
 
 variable "launch_template_tags" {
   description = "A map of additional tags to add to the tag_specifications of launch template created"
-  type        = list(any)
-  default     = []
+  type        = map(string)
+  default     = {}
 }
 
 variable "tag_specifications" {
   description = "The tags to apply to the resources during launch"
-  type        = list(string)
-  default     = ["instance", "volume", "network-interface"]
+  type        = list(any)
+  default     = []
 }
 
 ################################################################################

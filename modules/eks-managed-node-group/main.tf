@@ -278,7 +278,7 @@ resource "aws_launch_template" "this" {
     }
   }
 
-  update_default_version = var.update_launch_template_default_version
+  # update_default_version = var.update_launch_template_default_version
   # user_data              = module.user_data.user_data
   user_data              = var.user_data
   vpc_security_group_ids = length(var.network_interfaces) > 0 ? [] : local.security_group_ids

@@ -464,8 +464,8 @@ variable "iam_role_attach_cni_policy" {
   default     = true
 }
 
-variable "iam_role_additional_policies" {
-  description = "Additional policies to be added to the IAM role"
+variable "iam_role_policy_attachments" {
+  description = "IAM role policy attachments"
   type        = map(string)
   default     = {}
 }

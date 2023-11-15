@@ -204,7 +204,7 @@ resource "aws_launch_template" "this" {
   }
 
   dynamic "monitoring" {
-    for_each = var.enable_monitoring ? [1] : []
+    for_each = var.enable_monitoring != null ? [1] : []
 
     content {
       enabled = var.enable_monitoring

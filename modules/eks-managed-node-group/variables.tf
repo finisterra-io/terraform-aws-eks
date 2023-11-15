@@ -253,7 +253,7 @@ variable "metadata_options" {
 variable "enable_monitoring" {
   description = "Enables/disables detailed monitoring"
   type        = bool
-  default     = true
+  default     = null
 }
 
 variable "network_interfaces" {

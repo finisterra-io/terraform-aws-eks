@@ -22,8 +22,8 @@ variable "platform" {
 
 variable "user_data" {
   description = "Base64 encoded user data rendered for the provided inputs"
-  type       = string
-  default    = null
+  type        = string
+  default     = null
 }
 
 variable "enable_bootstrap_user_data" {
@@ -276,7 +276,7 @@ variable "private_dns_name_options" {
 
 variable "launch_template_tags" {
   description = "A map of additional tags to add to the tag_specifications of launch template created"
-  type        = map(string)
+  type        = list(any)
   default     = {}
 }
 

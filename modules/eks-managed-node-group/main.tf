@@ -211,8 +211,8 @@ resource "aws_launch_template" "this" {
     }
   }
 
-  name        = var.launch_template_use_name_prefix ? null : local.launch_template_name
-  name_prefix = var.launch_template_use_name_prefix ? "${local.launch_template_name}-" : null
+  name = var.launch_template_name
+  # name_prefix = var.launch_template_use_name_prefix ? "${local.launch_template_name}-" : null
 
   dynamic "network_interfaces" {
     for_each = var.network_interfaces

@@ -273,8 +273,8 @@ resource "aws_launch_template" "this" {
     for_each = toset(var.tag_specifications)
 
     content {
-      resource_type = tag_specifications.key
-      tags          = { Name = var.name }
+      resource_type = tag_specifications.value.resource_type
+      tags          = tag_specifications.value.tags
     }
   }
 

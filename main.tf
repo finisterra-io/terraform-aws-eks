@@ -26,7 +26,7 @@ resource "aws_eks_cluster" "this" {
   count = local.create ? 1 : 0
 
   name                      = var.cluster_name
-  role_arn                  = local.cluster_role
+  role_arn                  = var.iam_role_arn
   version                   = var.cluster_version
   enabled_cluster_log_types = var.cluster_enabled_log_types
 

@@ -374,7 +374,7 @@ variable "custom_oidc_thumbprints" {
 variable "create_iam_role" {
   description = "Determines whether a an IAM role is created or to use an existing IAM role"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "iam_role_arn" {

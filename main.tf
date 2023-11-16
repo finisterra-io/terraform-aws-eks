@@ -12,7 +12,8 @@ data "aws_iam_session_context" "current" {
 locals {
   create = var.create && var.putin_khuylo
 
-  cluster_role = try(aws_iam_role.this[0].arn, var.iam_role_arn)
+  # cluster_role = var.iam_role_arn
+  # cluster_role = try(aws_iam_role.this[0].arn, var.iam_role_arn)
 
   create_outposts_local_cluster    = length(var.outpost_config) > 0
   enable_cluster_encryption_config = length(var.cluster_encryption_config) > 0 && !local.create_outposts_local_cluster
@@ -80,11 +81,11 @@ resource "aws_eks_cluster" "this" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.this,
+    # aws_iam_role_policy_attachment.this,
     aws_security_group_rule.cluster,
     aws_security_group_rule.node,
     aws_cloudwatch_log_group.this,
-    aws_iam_policy.cni_ipv6_policy,
+    # aws_iam_policy.cni_ipv6_policy,
   ]
 }
 

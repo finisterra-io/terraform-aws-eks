@@ -64,7 +64,7 @@ resource "aws_eks_cluster" "this" {
 
     content {
       provider {
-        key_arn = var.create_kms_key ? module.kms.key_arn : encryption_config.value.provider_key_arn
+        key_arn = encryption_config.value.provider_key_arn
       }
       resources = encryption_config.value.resources
     }
@@ -359,7 +359,7 @@ resource "aws_iam_policy" "cluster_encryption" {
           "kms:DescribeKey",
         ]
         Effect   = "Allow"
-        Resource = var.create_kms_key ? module.kms.key_arn : var.cluster_encryption_config.provider_key_arn
+        Resource = var.cluster_encryption_config.provider_key_arn
       },
     ]
   })

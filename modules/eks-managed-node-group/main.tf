@@ -33,6 +33,10 @@ locals {
   security_group_ids   = compact(concat([var.cluster_primary_security_group_id], var.vpc_security_group_ids))
 }
 
+locals {
+  monitoring_enabled = var.enable_monitoring != null && var.enable_monitoring ? true : false
+}
+
 resource "aws_launch_template" "this" {
   count = var.create && var.create_launch_template && var.use_custom_launch_template ? 1 : 0
 
@@ -206,15 +210,12 @@ resource "aws_launch_template" "this" {
   }
 
   dynamic "monitoring" {
-    # Always iterate over a single-item list
-    for_each = [true]
+    for_each = var.enable_monitoring != null && var.enable_monitoring ? [true] : [false]
 
     content {
-      # Check if var.enable_monitoring is not null and true; otherwise, set to false
-      enabled = var.enable_monitoring != null && var.enable_monitoring ? true : false
+      enabled = local.monitoring_enabled
     }
   }
-
 
   name = var.launch_template_name
   # name_prefix = var.launch_template_use_name_prefix ? "${local.launch_template_name}-" : null

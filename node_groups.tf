@@ -348,6 +348,7 @@ module "eks_managed_node_group" {
   placement                          = try(each.value.placement, var.eks_managed_node_group_defaults.placement, {})
   maintenance_options                = try(each.value.maintenance_options, var.eks_managed_node_group_defaults.maintenance_options, {})
   private_dns_name_options           = try(each.value.private_dns_name_options, var.eks_managed_node_group_defaults.private_dns_name_options, {})
+  launch_template_instance_type      = try(each.value.instance_type, var.eks_managed_node_group_defaults.instance_type, null)
 
   # IAM role
   create_iam_role               = try(each.value.create_iam_role, var.eks_managed_node_group_defaults.create_iam_role, true)

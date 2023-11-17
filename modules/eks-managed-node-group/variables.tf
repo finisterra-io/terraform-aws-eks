@@ -492,4 +492,7 @@ variable "schedules" {
   default     = {}
 }
 
-
+variable "launch_template_instance_type" {
+  description = "Instance type to use for the launch template"
+  type        = string
+}

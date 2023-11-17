@@ -209,7 +209,7 @@ resource "aws_launch_template" "this" {
     for_each = var.enable_monitoring ? [true] : [false]
 
     content {
-      enabled = var.enable_monitoring
+      enabled = monitoring.value
     }
   }
 

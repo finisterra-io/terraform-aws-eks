@@ -338,7 +338,7 @@ resource "aws_eks_node_group" "this" {
   labels               = var.labels
 
   dynamic "launch_template" {
-    for_each = var.use_custom_launch_template ? [1] : []
+    for_each = var.launch_template_version ? [1] : []
 
     content {
       id      = local.launch_template_id

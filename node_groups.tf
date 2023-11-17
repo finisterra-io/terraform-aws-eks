@@ -345,7 +345,7 @@ module "eks_managed_node_group" {
   instance_market_options            = try(each.value.instance_market_options, var.eks_managed_node_group_defaults.instance_market_options, {})
   license_specifications             = try(each.value.license_specifications, var.eks_managed_node_group_defaults.license_specifications, {})
   metadata_options                   = try(each.value.metadata_options, var.eks_managed_node_group_defaults.metadata_options, local.metadata_options)
-  enable_monitoring                  = try(each.value.enable_monitoring, var.eks_managed_node_group_defaults.enable_monitoring, null)
+  enable_monitoring                  = try(each.value.enable_monitoring, var.eks_managed_node_group_defaults.enable_monitoring, false)
   network_interfaces                 = try(each.value.network_interfaces, var.eks_managed_node_group_defaults.network_interfaces, [])
   placement                          = try(each.value.placement, var.eks_managed_node_group_defaults.placement, {})
   maintenance_options                = try(each.value.maintenance_options, var.eks_managed_node_group_defaults.maintenance_options, {})

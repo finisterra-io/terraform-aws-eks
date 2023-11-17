@@ -211,7 +211,7 @@ resource "aws_launch_template" "this" {
 
     content {
       # Check if var.enable_monitoring is not null and true; otherwise, set to false
-      enabled = var.enable_monitoring != null && var.enable_monitoring
+      enabled = var.enable_monitoring != null && var.enable_monitoring ? true : false
     }
   }
 

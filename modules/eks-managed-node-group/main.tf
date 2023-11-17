@@ -206,14 +206,14 @@ resource "aws_launch_template" "this" {
   }
 
   dynamic "monitoring" {
-    # Set to [false] if var.enable_monitoring is null, otherwise use its actual value
-    for_each = toset([coalesce(var.enable_monitoring, false) ? true : false])
+    # Always iterate over a single-item list
+    for_each = [true]
 
     content {
-      enabled = each.value
+      # Check if var.enable_monitoring is not null and true; otherwise, set to false
+      enabled = var.enable_monitoring != null && var.enable_monitoring
     }
   }
-
 
 
   name = var.launch_template_name

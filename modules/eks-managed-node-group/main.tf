@@ -206,12 +206,14 @@ resource "aws_launch_template" "this" {
   }
 
   dynamic "monitoring" {
-    for_each = var.enable_monitoring ? [true] : [false]
+    # The for_each will be [false] if var.enable_monitoring is either false or null
+    for_each = var.enable_monitoring != null && var.enable_monitoring ? [true] : [false]
 
     content {
-      enabled = var.enable_monitoring
+      enabled = each.value
     }
   }
+
 
   name = var.launch_template_name
   # name_prefix = var.launch_template_use_name_prefix ? "${local.launch_template_name}-" : null

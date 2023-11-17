@@ -303,6 +303,8 @@ module "eks_managed_node_group" {
   update_config = try(each.value.update_config, var.eks_managed_node_group_defaults.update_config, local.default_update_config)
   timeouts      = try(each.value.timeouts, var.eks_managed_node_group_defaults.timeouts, {})
 
+  user_data = try(each.value.user_data, var.eks_managed_node_group_defaults.user_data, null)
+
   # # User data
   # platform                   = try(each.value.platform, var.eks_managed_node_group_defaults.platform, "linux")
   # cluster_endpoint           = try(aws_eks_cluster.this[0].endpoint, "")

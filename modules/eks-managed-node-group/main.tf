@@ -342,7 +342,7 @@ resource "aws_eks_node_group" "this" {
 
     content {
       id      = local.launch_template_id
-      version = local.launch_template_version
+      version = var.launch_template_version
     }
   }
 

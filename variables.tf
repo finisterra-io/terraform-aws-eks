@@ -35,7 +35,7 @@ variable "cluster_version" {
 variable "cluster_enabled_log_types" {
   description = "A list of the desired control plane logs to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)"
   type        = list(string)
-  default     = ["audit", "api", "authenticator"]
+  default     = []
 }
 
 variable "cluster_additional_security_group_ids" {
@@ -211,7 +211,7 @@ variable "kms_key_aliases" {
 variable "create_cloudwatch_log_group" {
   description = "Determines whether a log group is created by this module for the cluster logs. If not, AWS will automatically create one if logging is enabled"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "cloudwatch_log_group_retention_in_days" {

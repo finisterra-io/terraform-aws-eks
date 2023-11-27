@@ -398,7 +398,7 @@ resource "aws_eks_addon" "this" {
     module.self_managed_node_group,
   ]
 
-  tags = var.cluster_tags
+  tags = each.value.tags
 }
 
 resource "aws_eks_addon" "before_compute" {

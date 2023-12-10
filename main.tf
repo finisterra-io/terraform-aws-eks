@@ -32,7 +32,7 @@ resource "aws_eks_cluster" "this" {
   enabled_cluster_log_types = var.cluster_enabled_log_types
 
   vpc_config {
-    security_group_ids      = compact(distinct(concat(var.cluster_additional_security_group_ids, [local.cluster_security_group_id])))
+    security_group_ids      = var.cluster_security_group_ids
     subnet_ids              = coalescelist(var.control_plane_subnet_ids, var.subnet_ids)
     endpoint_private_access = var.cluster_endpoint_private_access
     endpoint_public_access  = var.cluster_endpoint_public_access
@@ -112,39 +112,6 @@ resource "aws_cloudwatch_log_group" "this" {
   tags = var.cloudwatch_log_group_tags
 }
 
-################################################################################
-# KMS Key
-################################################################################
-
-# module "kms" {
-#   source  = "terraform-aws-modules/kms/aws"
-#   version = "1.1.0" # Note - be mindful of Terraform/provider version compatibility between modules
-
-#   create = local.create && var.create_kms_key && local.enable_cluster_encryption_config # not valid on Outposts
-
-#   description             = coalesce(var.kms_key_description, "${var.cluster_name} cluster encryption key")
-#   key_usage               = "ENCRYPT_DECRYPT"
-#   deletion_window_in_days = var.kms_key_deletion_window_in_days
-#   enable_key_rotation     = var.enable_kms_key_rotation
-
-#   # Policy
-#   enable_default_policy     = var.kms_key_enable_default_policy
-#   key_owners                = var.kms_key_owners
-#   key_administrators        = coalescelist(var.kms_key_administrators, [data.aws_iam_session_context.current.issuer_arn])
-#   key_users                 = concat([local.cluster_role], var.kms_key_users)
-#   key_service_users         = var.kms_key_service_users
-#   source_policy_documents   = var.kms_key_source_policy_documents
-#   override_policy_documents = var.kms_key_override_policy_documents
-
-#   # Aliases
-#   aliases = var.kms_key_aliases
-#   computed_aliases = {
-#     # Computed since users can pass in computed values for cluster name such as random provider resources
-#     cluster = { name = "eks/${var.cluster_name}" }
-#   }
-
-#   tags = var.cluster_tags
-# }
 
 ################################################################################
 # Cluster Security Group
@@ -216,13 +183,6 @@ resource "aws_security_group_rule" "cluster" {
 # Note - this is different from EKS identity provider
 ################################################################################
 
-# data "tls_certificate" "this" {
-#   # Not available on outposts
-#   count = local.create && var.enable_irsa && !local.create_outposts_local_cluster ? 1 : 0
-
-#   url = aws_eks_cluster.this[0].identity[0].oidc[0].issuer
-# }
-
 resource "aws_iam_openid_connect_provider" "oidc_provider" {
   # Not available on outposts
   count = local.create && var.enable_irsa && !local.create_outposts_local_cluster ? 1 : 0
@@ -239,134 +199,11 @@ resource "aws_iam_openid_connect_provider" "oidc_provider" {
 ################################################################################
 
 locals {
-  #   create_iam_role        = local.create && var.create_iam_role
-  #   iam_role_name          = coalesce(var.iam_role_name, "${var.cluster_name}-cluster")
-  #   iam_role_policy_prefix = "arn:${data.aws_partition.current.partition}:iam::aws:policy"
-
-  #   cluster_encryption_policy_name = coalesce(var.cluster_encryption_policy_name, "${local.iam_role_name}-ClusterEncryption")
-
   #   # TODO - hopefully this can be removed once the AWS endpoint is named properly in China
   #   # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1904
   dns_suffix = coalesce(var.cluster_iam_role_dns_suffix, data.aws_partition.current.dns_suffix)
 }
 
-# data "aws_iam_policy_document" "assume_role_policy" {
-#   count = local.create && var.create_iam_role ? 1 : 0
-
-#   statement {
-#     sid     = "EKSClusterAssumeRole"
-#     actions = ["sts:AssumeRole"]
-
-#     principals {
-#       type        = "Service"
-#       identifiers = ["eks.${local.dns_suffix}"]
-#     }
-
-#     dynamic "principals" {
-#       for_each = local.create_outposts_local_cluster ? [1] : []
-
-#       content {
-#         type = "Service"
-#         identifiers = [
-#           "ec2.${local.dns_suffix}",
-#         ]
-#       }
-#     }
-#   }
-# }
-
-# resource "aws_iam_role" "this" {
-#   count = local.create_iam_role ? 1 : 0
-
-#   name        = var.iam_role_use_name_prefix ? null : local.iam_role_name
-#   name_prefix = var.iam_role_use_name_prefix ? "${local.iam_role_name}${var.prefix_separator}" : null
-#   path        = var.iam_role_path
-#   description = var.iam_role_description
-
-#   assume_role_policy    = data.aws_iam_policy_document.assume_role_policy[0].json
-#   permissions_boundary  = var.iam_role_permissions_boundary
-#   force_detach_policies = true
-
-#   # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/920
-#   # Resources running on the cluster are still generating logs when destroying the module resources
-#   # which results in the log group being re-created even after Terraform destroys it. Removing the
-#   # ability for the cluster role to create the log group prevents this log group from being re-created
-#   # outside of Terraform due to services still generating logs during destroy process
-#   dynamic "inline_policy" {
-#     for_each = var.create_cloudwatch_log_group ? [1] : []
-#     content {
-#       name = local.iam_role_name
-
-#       policy = jsonencode({
-#         Version = "2012-10-17"
-#         Statement = [
-#           {
-#             Action   = ["logs:CreateLogGroup"]
-#             Effect   = "Deny"
-#             Resource = "*"
-#           },
-#         ]
-#       })
-#     }
-#   }
-
-#   tags = merge(var.tags, var.iam_role_tags)
-# }
-
-# # Policies attached ref https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html
-# resource "aws_iam_role_policy_attachment" "this" {
-#   for_each = { for k, v in {
-#     AmazonEKSClusterPolicy         = local.create_outposts_local_cluster ? "${local.iam_role_policy_prefix}/AmazonEKSLocalOutpostClusterPolicy" : "${local.iam_role_policy_prefix}/AmazonEKSClusterPolicy",
-#     AmazonEKSVPCResourceController = "${local.iam_role_policy_prefix}/AmazonEKSVPCResourceController",
-#   } : k => v if local.create_iam_role }
-
-#   policy_arn = each.value
-#   role       = aws_iam_role.this[0].name
-# }
-
-# resource "aws_iam_role_policy_attachment" "additional" {
-#   for_each = { for k, v in var.iam_role_additional_policies : k => v if local.create_iam_role }
-
-#   policy_arn = each.value
-#   role       = aws_iam_role.this[0].name
-# }
-
-# # Using separate attachment due to `The "for_each" value depends on resource attributes that cannot be determined until apply`
-# resource "aws_iam_role_policy_attachment" "cluster_encryption" {
-#   # Encryption config not available on Outposts
-#   count = local.create_iam_role && var.attach_cluster_encryption_policy && local.enable_cluster_encryption_config ? 1 : 0
-
-#   policy_arn = aws_iam_policy.cluster_encryption[0].arn
-#   role       = aws_iam_role.this[0].name
-# }
-
-# resource "aws_iam_policy" "cluster_encryption" {
-#   # Encryption config not available on Outposts
-#   count = local.create_iam_role && var.attach_cluster_encryption_policy && local.enable_cluster_encryption_config ? 1 : 0
-
-#   name        = var.cluster_encryption_policy_use_name_prefix ? null : local.cluster_encryption_policy_name
-#   name_prefix = var.cluster_encryption_policy_use_name_prefix ? local.cluster_encryption_policy_name : null
-#   description = var.cluster_encryption_policy_description
-#   path        = var.cluster_encryption_policy_path
-
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = [
-#           "kms:Encrypt",
-#           "kms:Decrypt",
-#           "kms:ListGrants",
-#           "kms:DescribeKey",
-#         ]
-#         Effect   = "Allow"
-#         Resource = var.cluster_encryption_config.provider_key_arn
-#       },
-#     ]
-#   })
-
-#   tags = merge(var.tags, var.cluster_encryption_policy_tags)
-# }
 
 ################################################################################
 # EKS Addons

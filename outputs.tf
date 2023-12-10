@@ -75,15 +75,15 @@ output "cluster_primary_security_group_id" {
 # Cluster Security Group
 ################################################################################
 
-output "cluster_security_group_arn" {
-  description = "Amazon Resource Name (ARN) of the cluster security group"
-  value       = try(aws_security_group.cluster[0].arn, null)
-}
+# output "cluster_security_group_arn" {
+#   description = "Amazon Resource Name (ARN) of the cluster security group"
+#   value       = try(aws_security_group.cluster[0].arn, null)
+# }
 
-output "cluster_security_group_id" {
-  description = "ID of the cluster security group"
-  value       = try(aws_security_group.cluster[0].id, null)
-}
+# output "cluster_security_group_id" {
+#   description = "ID of the cluster security group"
+#   value       = try(aws_security_group.cluster[0].id, null)
+# }
 
 ################################################################################
 # Node Security Group

@@ -89,15 +89,15 @@ output "cluster_security_group_id" {
 # Node Security Group
 ################################################################################
 
-output "node_security_group_arn" {
-  description = "Amazon Resource Name (ARN) of the node shared security group"
-  value       = try(aws_security_group.node[0].arn, null)
-}
+# output "node_security_group_arn" {
+#   description = "Amazon Resource Name (ARN) of the node shared security group"
+#   value       = try(aws_security_group.node[0].arn, null)
+# }
 
-output "node_security_group_id" {
-  description = "ID of the node shared security group"
-  value       = try(aws_security_group.node[0].id, null)
-}
+# output "node_security_group_id" {
+#   description = "ID of the node shared security group"
+#   value       = try(aws_security_group.node[0].id, null)
+# }
 
 ################################################################################
 # IRSA

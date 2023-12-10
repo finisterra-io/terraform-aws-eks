@@ -82,8 +82,8 @@ resource "aws_eks_cluster" "this" {
 
   depends_on = [
     # aws_iam_role_policy_attachment.this,
-    aws_security_group_rule.cluster,
-    aws_security_group_rule.node,
+    # aws_security_group_rule.cluster,
+    # aws_security_group_rule.node,
     aws_cloudwatch_log_group.this,
     # aws_iam_policy.cni_ipv6_policy,
   ]
@@ -112,71 +112,6 @@ resource "aws_cloudwatch_log_group" "this" {
   tags = var.cloudwatch_log_group_tags
 }
 
-
-################################################################################
-# Cluster Security Group
-# Defaults follow https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
-################################################################################
-
-locals {
-  cluster_sg_name   = coalesce(var.cluster_security_group_name, "${var.cluster_name}-cluster")
-  create_cluster_sg = local.create && var.create_cluster_security_group
-
-  cluster_security_group_id = local.create_cluster_sg ? aws_security_group.cluster[0].id : var.cluster_security_group_id
-
-  # Do not add rules to node security group if the module is not creating it
-  cluster_security_group_rules = { for k, v in {
-    ingress_nodes_443 = {
-      description                = "Node groups to cluster API"
-      protocol                   = "tcp"
-      from_port                  = 443
-      to_port                    = 443
-      type                       = "ingress"
-      source_node_security_group = true
-    }
-  } : k => v if local.create_node_sg }
-}
-
-resource "aws_security_group" "cluster" {
-  count = local.create_cluster_sg ? 1 : 0
-
-  name        = var.cluster_security_group_use_name_prefix ? null : local.cluster_sg_name
-  name_prefix = var.cluster_security_group_use_name_prefix ? "${local.cluster_sg_name}${var.prefix_separator}" : null
-  description = var.cluster_security_group_description
-  vpc_id      = var.vpc_id
-
-  tags = merge(
-    var.tags,
-    { "Name" = local.cluster_sg_name },
-    var.cluster_security_group_tags
-  )
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_security_group_rule" "cluster" {
-  for_each = { for k, v in merge(
-    local.cluster_security_group_rules,
-    var.cluster_security_group_additional_rules
-  ) : k => v if local.create_cluster_sg }
-
-  # Required
-  security_group_id = aws_security_group.cluster[0].id
-  protocol          = each.value.protocol
-  from_port         = each.value.from_port
-  to_port           = each.value.to_port
-  type              = each.value.type
-
-  # Optional
-  description              = lookup(each.value, "description", null)
-  cidr_blocks              = lookup(each.value, "cidr_blocks", null)
-  ipv6_cidr_blocks         = lookup(each.value, "ipv6_cidr_blocks", null)
-  prefix_list_ids          = lookup(each.value, "prefix_list_ids", null)
-  self                     = lookup(each.value, "self", null)
-  source_security_group_id = try(each.value.source_node_security_group, false) ? local.node_security_group_id : lookup(each.value, "source_security_group_id", null)
-}
 
 ################################################################################
 # IRSA

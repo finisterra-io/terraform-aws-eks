@@ -91,213 +91,213 @@ locals {
   # node_security_group_id = local.create_node_sg ? aws_security_group.node[0].id : var.node_security_group_id
   node_security_group_id = var.node_security_group_id
 
-  #   node_security_group_rules = {
-  #     ingress_cluster_443 = {
-  #       description                   = "Cluster API to node groups"
-  #       protocol                      = "tcp"
-  #       from_port                     = 443
-  #       to_port                       = 443
-  #       type                          = "ingress"
-  #       source_cluster_security_group = true
-  #     }
-  #     ingress_cluster_kubelet = {
-  #       description                   = "Cluster API to node kubelets"
-  #       protocol                      = "tcp"
-  #       from_port                     = 10250
-  #       to_port                       = 10250
-  #       type                          = "ingress"
-  #       source_cluster_security_group = true
-  #     }
-  #     ingress_self_coredns_tcp = {
-  #       description = "Node to node CoreDNS"
-  #       protocol    = "tcp"
-  #       from_port   = 53
-  #       to_port     = 53
-  #       type        = "ingress"
-  #       self        = true
-  #     }
-  #     ingress_self_coredns_udp = {
-  #       description = "Node to node CoreDNS UDP"
-  #       protocol    = "udp"
-  #       from_port   = 53
-  #       to_port     = 53
-  #       type        = "ingress"
-  #       self        = true
-  #     }
-  #   }
+  node_security_group_rules = {
+    ingress_cluster_443 = {
+      description                   = "Cluster API to node groups"
+      protocol                      = "tcp"
+      from_port                     = 443
+      to_port                       = 443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    ingress_cluster_kubelet = {
+      description                   = "Cluster API to node kubelets"
+      protocol                      = "tcp"
+      from_port                     = 10250
+      to_port                       = 10250
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    ingress_self_coredns_tcp = {
+      description = "Node to node CoreDNS"
+      protocol    = "tcp"
+      from_port   = 53
+      to_port     = 53
+      type        = "ingress"
+      self        = true
+    }
+    ingress_self_coredns_udp = {
+      description = "Node to node CoreDNS UDP"
+      protocol    = "udp"
+      from_port   = 53
+      to_port     = 53
+      type        = "ingress"
+      self        = true
+    }
+  }
 
-  #   node_security_group_recommended_rules = { for k, v in {
-  #     ingress_nodes_ephemeral = {
-  #       description = "Node to node ingress on ephemeral ports"
-  #       protocol    = "tcp"
-  #       from_port   = 1025
-  #       to_port     = 65535
-  #       type        = "ingress"
-  #       self        = true
-  #     }
-  #     # metrics-server
-  #     ingress_cluster_4443_webhook = {
-  #       description                   = "Cluster API to node 4443/tcp webhook"
-  #       protocol                      = "tcp"
-  #       from_port                     = 4443
-  #       to_port                       = 4443
-  #       type                          = "ingress"
-  #       source_cluster_security_group = true
-  #     }
-  #     # prometheus-adapter
-  #     ingress_cluster_6443_webhook = {
-  #       description                   = "Cluster API to node 6443/tcp webhook"
-  #       protocol                      = "tcp"
-  #       from_port                     = 6443
-  #       to_port                       = 6443
-  #       type                          = "ingress"
-  #       source_cluster_security_group = true
-  #     }
-  #     # Karpenter
-  #     ingress_cluster_8443_webhook = {
-  #       description                   = "Cluster API to node 8443/tcp webhook"
-  #       protocol                      = "tcp"
-  #       from_port                     = 8443
-  #       to_port                       = 8443
-  #       type                          = "ingress"
-  #       source_cluster_security_group = true
-  #     }
-  #     # ALB controller, NGINX
-  #     ingress_cluster_9443_webhook = {
-  #       description                   = "Cluster API to node 9443/tcp webhook"
-  #       protocol                      = "tcp"
-  #       from_port                     = 9443
-  #       to_port                       = 9443
-  #       type                          = "ingress"
-  #       source_cluster_security_group = true
-  #     }
-  #     egress_all = {
-  #       description      = "Allow all egress"
-  #       protocol         = "-1"
-  #       from_port        = 0
-  #       to_port          = 0
-  #       type             = "egress"
-  #       cidr_blocks      = ["0.0.0.0/0"]
-  #       ipv6_cidr_blocks = var.cluster_ip_family == "ipv6" ? ["::/0"] : null
-  #     }
-  #   } : k => v if var.node_security_group_enable_recommended_rules }
-  # }
+  node_security_group_recommended_rules = { for k, v in {
+    ingress_nodes_ephemeral = {
+      description = "Node to node ingress on ephemeral ports"
+      protocol    = "tcp"
+      from_port   = 1025
+      to_port     = 65535
+      type        = "ingress"
+      self        = true
+    }
+    # metrics-server
+    ingress_cluster_4443_webhook = {
+      description                   = "Cluster API to node 4443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 4443
+      to_port                       = 4443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    # prometheus-adapter
+    ingress_cluster_6443_webhook = {
+      description                   = "Cluster API to node 6443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 6443
+      to_port                       = 6443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    # Karpenter
+    ingress_cluster_8443_webhook = {
+      description                   = "Cluster API to node 8443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 8443
+      to_port                       = 8443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    # ALB controller, NGINX
+    ingress_cluster_9443_webhook = {
+      description                   = "Cluster API to node 9443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 9443
+      to_port                       = 9443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    egress_all = {
+      description      = "Allow all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = var.cluster_ip_family == "ipv6" ? ["::/0"] : null
+    }
+  } : k => v if var.node_security_group_enable_recommended_rules }
+}
 
-  # resource "aws_security_group" "node" {
-  #   count = local.create_node_sg ? 1 : 0
+# resource "aws_security_group" "node" {
+#   count = local.create_node_sg ? 1 : 0
 
-  #   name        = var.node_security_group_use_name_prefix ? null : local.node_sg_name
-  #   name_prefix = var.node_security_group_use_name_prefix ? "${local.node_sg_name}${var.prefix_separator}" : null
-  #   description = var.node_security_group_description
-  #   vpc_id      = var.vpc_id
+#   name        = var.node_security_group_use_name_prefix ? null : local.node_sg_name
+#   name_prefix = var.node_security_group_use_name_prefix ? "${local.node_sg_name}${var.prefix_separator}" : null
+#   description = var.node_security_group_description
+#   vpc_id      = var.vpc_id
 
-  #   tags = merge(
-  #     var.tags,
-  #     {
-  #       "Name"                                      = local.node_sg_name
-  #       "kubernetes.io/cluster/${var.cluster_name}" = "owned"
-  #     },
-  #     var.node_security_group_tags
-  #   )
+#   tags = merge(
+#     var.tags,
+#     {
+#       "Name"                                      = local.node_sg_name
+#       "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+#     },
+#     var.node_security_group_tags
+#   )
 
-  #   lifecycle {
-  #     create_before_destroy = true
-  #   }
-  # }
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
 
-  # resource "aws_security_group_rule" "node" {
-  #   for_each = { for k, v in merge(
-  # #     local.node_security_group_rules,
-  # #     local.node_security_group_recommended_rules,
-  # #     var.node_security_group_additional_rules,
-  # #   ) : k => v if local.create_node_sg }
+# resource "aws_security_group_rule" "node" {
+#   for_each = { for k, v in merge(
+#     local.node_security_group_rules,
+#     local.node_security_group_recommended_rules,
+#     var.node_security_group_additional_rules,
+#   ) : k => v if local.create_node_sg }
 
-  # #   # Required
-  # #   security_group_id = aws_security_group.node[0].id
-  # #   protocol          = each.value.protocol
-  # #   from_port         = each.value.from_port
-  # #   to_port           = each.value.to_port
-  # #   type              = each.value.type
+#   # Required
+#   security_group_id = aws_security_group.node[0].id
+#   protocol          = each.value.protocol
+#   from_port         = each.value.from_port
+#   to_port           = each.value.to_port
+#   type              = each.value.type
 
-  # #   # Optional
-  # #   description              = lookup(each.value, "description", null)
-  # #   cidr_blocks              = lookup(each.value, "cidr_blocks", null)
-  # #   ipv6_cidr_blocks         = lookup(each.value, "ipv6_cidr_blocks", null)
-  # #   prefix_list_ids          = lookup(each.value, "prefix_list_ids", [])
-  # #   self                     = lookup(each.value, "self", null)
-  # #   source_security_group_id = try(each.value.source_cluster_security_group, false) ? local.cluster_security_group_id : lookup(each.value, "source_security_group_id", null)
-  # # }
+#   # Optional
+#   description              = lookup(each.value, "description", null)
+#   cidr_blocks              = lookup(each.value, "cidr_blocks", null)
+#   ipv6_cidr_blocks         = lookup(each.value, "ipv6_cidr_blocks", null)
+#   prefix_list_ids          = lookup(each.value, "prefix_list_ids", [])
+#   self                     = lookup(each.value, "self", null)
+#   source_security_group_id = try(each.value.source_cluster_security_group, false) ? local.cluster_security_group_id : lookup(each.value, "source_security_group_id", null)
+# }
 
-  # ################################################################################
-  # # Fargate Profile
-  # ################################################################################
+################################################################################
+# Fargate Profile
+################################################################################
 
-  # module "fargate_profile" {
-  #   source = "./modules/fargate-profile"
+module "fargate_profile" {
+  source = "./modules/fargate-profile"
 
-  #   for_each = { for k, v in var.fargate_profiles : k => v if var.create && !local.create_outposts_local_cluster }
+  for_each = { for k, v in var.fargate_profiles : k => v if var.create && !local.create_outposts_local_cluster }
 
-  #   create = try(each.value.create, true)
+  create = try(each.value.create, true)
 
-  #   # Fargate Profile
-  #   cluster_name      = aws_eks_cluster.this[0].name
-  #   cluster_ip_family = var.cluster_ip_family
-  #   name              = try(each.value.name, each.key)
-  #   subnet_ids        = try(each.value.subnet_ids, var.fargate_profile_defaults.subnet_ids, var.subnet_ids)
-  #   selectors         = try(each.value.selectors, var.fargate_profile_defaults.selectors, [])
-  #   timeouts          = try(each.value.timeouts, var.fargate_profile_defaults.timeouts, {})
+  # Fargate Profile
+  cluster_name      = aws_eks_cluster.this[0].name
+  cluster_ip_family = var.cluster_ip_family
+  name              = try(each.value.name, each.key)
+  subnet_ids        = try(each.value.subnet_ids, var.fargate_profile_defaults.subnet_ids, var.subnet_ids)
+  selectors         = try(each.value.selectors, var.fargate_profile_defaults.selectors, [])
+  timeouts          = try(each.value.timeouts, var.fargate_profile_defaults.timeouts, {})
 
-  #   # IAM role
-  #   create_iam_role               = try(each.value.create_iam_role, var.fargate_profile_defaults.create_iam_role, true)
-  #   iam_role_arn                  = try(each.value.iam_role_arn, var.fargate_profile_defaults.iam_role_arn, null)
-  #   iam_role_name                 = try(each.value.iam_role_name, var.fargate_profile_defaults.iam_role_name, null)
-  #   iam_role_use_name_prefix      = try(each.value.iam_role_use_name_prefix, var.fargate_profile_defaults.iam_role_use_name_prefix, true)
-  #   iam_role_path                 = try(each.value.iam_role_path, var.fargate_profile_defaults.iam_role_path, null)
-  #   iam_role_description          = try(each.value.iam_role_description, var.fargate_profile_defaults.iam_role_description, "Fargate profile IAM role")
-  #   iam_role_permissions_boundary = try(each.value.iam_role_permissions_boundary, var.fargate_profile_defaults.iam_role_permissions_boundary, null)
-  #   iam_role_tags                 = try(each.value.iam_role_tags, var.fargate_profile_defaults.iam_role_tags, {})
-  #   iam_role_attach_cni_policy    = try(each.value.iam_role_attach_cni_policy, var.fargate_profile_defaults.iam_role_attach_cni_policy, true)
-  #   # To better understand why this `lookup()` logic is required, see:
-  #   # https://github.com/hashicorp/terraform/issues/31646#issuecomment-1217279031
-  #   iam_role_additional_policies = lookup(each.value, "iam_role_additional_policies", lookup(var.fargate_profile_defaults, "iam_role_additional_policies", {}))
+  # IAM role
+  create_iam_role               = try(each.value.create_iam_role, var.fargate_profile_defaults.create_iam_role, true)
+  iam_role_arn                  = try(each.value.iam_role_arn, var.fargate_profile_defaults.iam_role_arn, null)
+  iam_role_name                 = try(each.value.iam_role_name, var.fargate_profile_defaults.iam_role_name, null)
+  iam_role_use_name_prefix      = try(each.value.iam_role_use_name_prefix, var.fargate_profile_defaults.iam_role_use_name_prefix, true)
+  iam_role_path                 = try(each.value.iam_role_path, var.fargate_profile_defaults.iam_role_path, null)
+  iam_role_description          = try(each.value.iam_role_description, var.fargate_profile_defaults.iam_role_description, "Fargate profile IAM role")
+  iam_role_permissions_boundary = try(each.value.iam_role_permissions_boundary, var.fargate_profile_defaults.iam_role_permissions_boundary, null)
+  iam_role_tags                 = try(each.value.iam_role_tags, var.fargate_profile_defaults.iam_role_tags, {})
+  iam_role_attach_cni_policy    = try(each.value.iam_role_attach_cni_policy, var.fargate_profile_defaults.iam_role_attach_cni_policy, true)
+  # To better understand why this `lookup()` logic is required, see:
+  # https://github.com/hashicorp/terraform/issues/31646#issuecomment-1217279031
+  iam_role_additional_policies = lookup(each.value, "iam_role_additional_policies", lookup(var.fargate_profile_defaults, "iam_role_additional_policies", {}))
 
-  #   tags = merge(var.tags, try(each.value.tags, var.fargate_profile_defaults.tags, {}))
-  # }
+  tags = merge(var.tags, try(each.value.tags, var.fargate_profile_defaults.tags, {}))
+}
 
-  # ################################################################################
-  # # EKS Managed Node Group
-  # ################################################################################
+################################################################################
+# EKS Managed Node Group
+################################################################################
 
-  # module "eks_managed_node_group" {
-  #   source = "./modules/eks-managed-node-group"
+module "eks_managed_node_group" {
+  source = "./modules/eks-managed-node-group"
 
-  #   for_each = { for k, v in var.eks_managed_node_groups : k => v if var.create && !local.create_outposts_local_cluster }
+  for_each = { for k, v in var.eks_managed_node_groups : k => v if var.create && !local.create_outposts_local_cluster }
 
-  #   create = try(each.value.create, true)
+  create = try(each.value.create, true)
 
-  #   cluster_name      = aws_eks_cluster.this[0].name
-  #   cluster_version   = try(each.value.cluster_version, var.eks_managed_node_group_defaults.cluster_version, aws_eks_cluster.this[0].version)
-  #   cluster_ip_family = var.cluster_ip_family
+  cluster_name      = aws_eks_cluster.this[0].name
+  cluster_version   = try(each.value.cluster_version, var.eks_managed_node_group_defaults.cluster_version, aws_eks_cluster.this[0].version)
+  cluster_ip_family = var.cluster_ip_family
 
-  #   # EKS Managed Node Group
-  #   name            = try(each.value.name, each.key)
-  #   use_name_prefix = try(each.value.use_name_prefix, var.eks_managed_node_group_defaults.use_name_prefix, true)
+  # EKS Managed Node Group
+  name            = try(each.value.name, each.key)
+  use_name_prefix = try(each.value.use_name_prefix, var.eks_managed_node_group_defaults.use_name_prefix, true)
 
-  #   subnet_ids = try(each.value.subnet_ids, var.eks_managed_node_group_defaults.subnet_ids, var.subnet_ids)
+  subnet_ids = try(each.value.subnet_ids, var.eks_managed_node_group_defaults.subnet_ids, var.subnet_ids)
 
-  #   min_size     = try(each.value.min_size, var.eks_managed_node_group_defaults.min_size, 1)
-  #   max_size     = try(each.value.max_size, var.eks_managed_node_group_defaults.max_size, 3)
-  #   desired_size = try(each.value.desired_size, var.eks_managed_node_group_defaults.desired_size, 1)
+  min_size     = try(each.value.min_size, var.eks_managed_node_group_defaults.min_size, 1)
+  max_size     = try(each.value.max_size, var.eks_managed_node_group_defaults.max_size, 3)
+  desired_size = try(each.value.desired_size, var.eks_managed_node_group_defaults.desired_size, 1)
 
-  #   ami_id              = try(each.value.ami_id, var.eks_managed_node_group_defaults.ami_id, "")
-  #   ami_type            = try(each.value.ami_type, var.eks_managed_node_group_defaults.ami_type, null)
-  #   ami_release_version = try(each.value.ami_release_version, var.eks_managed_node_group_defaults.ami_release_version, null)
+  ami_id              = try(each.value.ami_id, var.eks_managed_node_group_defaults.ami_id, "")
+  ami_type            = try(each.value.ami_type, var.eks_managed_node_group_defaults.ami_type, null)
+  ami_release_version = try(each.value.ami_release_version, var.eks_managed_node_group_defaults.ami_release_version, null)
 
-  #   capacity_type        = try(each.value.capacity_type, var.eks_managed_node_group_defaults.capacity_type, null)
-  #   disk_size            = try(each.value.disk_size, var.eks_managed_node_group_defaults.disk_size, null)
-  #   force_update_version = try(each.value.force_update_version, var.eks_managed_node_group_defaults.force_update_version, null)
-  #   instance_types       = try(each.value.instance_types, var.eks_managed_node_group_defaults.instance_types, null)
-  #   labels               = try(each.value.labels, var.eks_managed_node_group_defaults.labels, null)
+  capacity_type        = try(each.value.capacity_type, var.eks_managed_node_group_defaults.capacity_type, null)
+  disk_size            = try(each.value.disk_size, var.eks_managed_node_group_defaults.disk_size, null)
+  force_update_version = try(each.value.force_update_version, var.eks_managed_node_group_defaults.force_update_version, null)
+  instance_types       = try(each.value.instance_types, var.eks_managed_node_group_defaults.instance_types, null)
+  labels               = try(each.value.labels, var.eks_managed_node_group_defaults.labels, null)
 
   remote_access = try(each.value.remote_access, var.eks_managed_node_group_defaults.remote_access, {})
   taints        = try(each.value.taints, var.eks_managed_node_group_defaults.taints, {})

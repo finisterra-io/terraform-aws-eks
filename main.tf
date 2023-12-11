@@ -112,7 +112,6 @@ resource "aws_cloudwatch_log_group" "this" {
   tags = var.cloudwatch_log_group_tags
 }
 
-
 ################################################################################
 # IRSA
 # Note - this is different from EKS identity provider

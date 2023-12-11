@@ -285,8 +285,8 @@ module "eks_managed_node_group" {
 
   subnet_ids   = try(each.value.subnet_ids, null)
   subnet_names = try(each.value.subnet_names, null)
-  vpc_id       = try(each.value.vpc_id, null)
-  vpc_name     = try(each.value.vpc_name, null)
+  vpc_id       = try(var.vpc_id, null)
+  vpc_name     = try(var.vpc_name, null)
 
   min_size     = try(each.value.min_size, var.eks_managed_node_group_defaults.min_size, 1)
   max_size     = try(each.value.max_size, var.eks_managed_node_group_defaults.max_size, 3)

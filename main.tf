@@ -86,7 +86,6 @@ resource "aws_eks_cluster" "this" {
     # aws_security_group_rule.node,
     aws_cloudwatch_log_group.this,
     # aws_iam_policy.cni_ipv6_policy,
-    data.aws_subnet.default,
   ]
 }
 

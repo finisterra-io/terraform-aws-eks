@@ -496,3 +496,21 @@ variable "launch_template_instance_type" {
   description = "Instance type to use for the launch template"
   type        = string
 }
+
+variable "vpc_id" {
+  description = "ID of the VPC where the cluster will be provisioned"
+  type        = string
+  default     = null
+}
+
+variable "vpc_name" {
+  description = "Name of the VPC where the cluster will be provisioned"
+  type        = string
+  default     = null
+}
+
+variable "subnet_names" {
+  description = "List of subnet names where the cluster will be provisioned"
+  type        = list(string)
+  default     = null
+}

@@ -243,7 +243,7 @@ module "fargate_profile" {
   cluster_name      = aws_eks_cluster.this[0].name
   cluster_ip_family = var.cluster_ip_family
   name              = try(each.value.name, each.key)
-  subnet_ids        = try(each.value.subnet_ids, var.fargate_profile_defaults.subnet_ids, var.subnet_ids)
+  subnet_ids        = coalesce(var.subnet_ids, data.aws_subnet.default[*].id, [])
   selectors         = try(each.value.selectors, var.fargate_profile_defaults.selectors, [])
   timeouts          = try(each.value.timeouts, var.fargate_profile_defaults.timeouts, {})
 
@@ -283,7 +283,10 @@ module "eks_managed_node_group" {
   name            = try(each.value.name, each.key)
   use_name_prefix = try(each.value.use_name_prefix, var.eks_managed_node_group_defaults.use_name_prefix, true)
 
-  subnet_ids = try(each.value.subnet_ids, var.eks_managed_node_group_defaults.subnet_ids, var.subnet_ids)
+  subnet_ids   = try(each.value.subnet_ids, null)
+  subnet_names = try(each.value.subnet_names, null)
+  vpc_id       = try(each.value.vpc_id, null)
+  vpc_name     = try(each.value.vpc_name, null)
 
   min_size     = try(each.value.min_size, var.eks_managed_node_group_defaults.min_size, 1)
   max_size     = try(each.value.max_size, var.eks_managed_node_group_defaults.max_size, 3)

@@ -33,7 +33,7 @@ resource "aws_eks_cluster" "this" {
 
   vpc_config {
     security_group_ids      = var.cluster_security_group_ids
-    subnet_ids              = coalescelist(var.control_plane_subnet_ids, var.subnet_ids)
+    subnet_ids              = coalesce(var.subnet_ids, data.aws_subnet.default[*].id, [])
     endpoint_private_access = var.cluster_endpoint_private_access
     endpoint_public_access  = var.cluster_endpoint_public_access
     public_access_cidrs     = var.cluster_endpoint_public_access_cidrs
@@ -179,10 +179,10 @@ resource "aws_eks_addon" "before_compute" {
   cluster_name = aws_eks_cluster.this[0].name
   addon_name   = try(each.value.name, each.key)
 
-  addon_version            = coalesce(try(each.value.addon_version, null), data.aws_eks_addon_version.this[each.key].version)
-  configuration_values     = try(each.value.configuration_values, null)
-  preserve                 = try(each.value.preserve, null)
-  resolve_conflicts        = try(each.value.resolve_conflicts, "OVERWRITE")
+  addon_version        = coalesce(try(each.value.addon_version, null), data.aws_eks_addon_version.this[each.key].version)
+  configuration_values = try(each.value.configuration_values, null)
+  preserve             = try(each.value.preserve, null)
+  # resolve_conflicts        = try(each.value.resolve_conflicts, "OVERWRITE")
   service_account_role_arn = try(each.value.service_account_role_arn, null)
 
   timeouts {

@@ -314,7 +314,7 @@ resource "aws_eks_node_group" "this" {
   # Required
   cluster_name  = var.cluster_name
   node_role_arn = var.iam_role_arn
-  subnet_ids    = coalesce(var.subnet_ids, data.aws_subnet.default[*].id, [])
+  subnet_ids    = coalesce(var.subnet_ids, data.aws_subnet.default[*].id)
 
   scaling_config {
     min_size     = var.min_size

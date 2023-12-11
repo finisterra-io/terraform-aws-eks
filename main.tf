@@ -32,8 +32,9 @@ resource "aws_eks_cluster" "this" {
   enabled_cluster_log_types = var.cluster_enabled_log_types
 
   vpc_config {
-    security_group_ids      = var.cluster_security_group_ids
-    subnet_ids              = try(var.subnet_ids, data.aws_subnet.default[*].id)
+    security_group_ids = var.cluster_security_group_ids
+    # subnet_ids              = coalesce(var.subnet_ids, data.aws_subnet.default[*].id)
+    subnet_ids              = data.aws_subnet.default[*].id
     endpoint_private_access = var.cluster_endpoint_private_access
     endpoint_public_access  = var.cluster_endpoint_public_access
     public_access_cidrs     = var.cluster_endpoint_public_access_cidrs

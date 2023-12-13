@@ -85,8 +85,7 @@ resource "aws_iam_policy" "cni_ipv6_policy" {
 ################################################################################
 
 locals {
-  node_sg_name   = coalesce(var.node_security_group_name, "${var.cluster_name}-node")
-  create_node_sg = var.create && var.create_node_security_group
+  node_sg_name = coalesce(var.node_security_group_name, "${var.cluster_name}-node")
 
   # node_security_group_id = local.create_node_sg ? aws_security_group.node[0].id : var.node_security_group_id
   node_security_group_id = var.node_security_group_id

@@ -170,15 +170,6 @@ output "cloudwatch_log_group_arn" {
 }
 
 ################################################################################
-# Fargate Profile
-################################################################################
-
-output "fargate_profiles" {
-  description = "Map of attribute maps for all EKS Fargate Profiles created"
-  value       = module.fargate_profile
-}
-
-################################################################################
 # EKS Managed Node Group
 ################################################################################
 
@@ -193,20 +184,6 @@ output "eks_managed_node_groups_autoscaling_group_names" {
 }
 
 ################################################################################
-# Self Managed Node Group
-################################################################################
-
-output "self_managed_node_groups" {
-  description = "Map of attribute maps for all self managed node groups created"
-  value       = module.self_managed_node_group
-}
-
-output "self_managed_node_groups_autoscaling_group_names" {
-  description = "List of the autoscaling group names created by self-managed node groups"
-  value       = compact([for group in module.self_managed_node_group : group.autoscaling_group_name])
-}
-
-################################################################################
 # Additional
 ################################################################################
 
@@ -214,10 +191,7 @@ output "aws_auth_configmap_yaml" {
   description = "[DEPRECATED - use `var.manage_aws_auth_configmap`] Formatted yaml output for base aws-auth configmap containing roles used in cluster node groups/fargate profiles"
   value = templatefile("${path.module}/templates/aws_auth_cm.tpl",
     {
-      eks_managed_role_arns                   = distinct(compact([for group in module.eks_managed_node_group : group.iam_role_arn]))
-      self_managed_role_arns                  = distinct(compact([for group in module.self_managed_node_group : group.iam_role_arn if group.platform != "windows"]))
-      win32_self_managed_role_arns            = distinct(compact([for group in module.self_managed_node_group : group.iam_role_arn if group.platform == "windows"]))
-      fargate_profile_pod_execution_role_arns = distinct(compact([for group in module.fargate_profile : group.fargate_profile_pod_execution_role_arn]))
+      eks_managed_role_arns = distinct(compact([for group in module.eks_managed_node_group : group.iam_role_arn]))
     }
   )
 }

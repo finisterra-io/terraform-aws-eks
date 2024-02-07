@@ -75,9 +75,8 @@ module "eks_managed_node_group" {
 
   create = try(each.value.create, true)
 
-  cluster_name      = aws_eks_cluster.this[0].name
-  cluster_version   = try(each.value.cluster_version, var.eks_managed_node_group_defaults.cluster_version, aws_eks_cluster.this[0].version)
-  cluster_ip_family = var.cluster_ip_family
+  cluster_name    = aws_eks_cluster.this[0].name
+  cluster_version = try(each.value.cluster_version, var.eks_managed_node_group_defaults.cluster_version, aws_eks_cluster.this[0].version)
 
   # EKS Managed Node Group
   name            = try(each.value.name, each.key)
@@ -106,26 +105,15 @@ module "eks_managed_node_group" {
   update_config = try(each.value.update_config, var.eks_managed_node_group_defaults.update_config, local.default_update_config)
   timeouts      = try(each.value.timeouts, var.eks_managed_node_group_defaults.timeouts, {})
 
-  user_data = try(each.value.user_data, var.eks_managed_node_group_defaults.user_data, null)
 
   # Launch Template
-  launch_template_version       = try(each.value.launch_template_version, var.eks_managed_node_group_defaults.launch_template_version, null)
-  launch_template_id            = try(each.value.launch_template_id, var.eks_managed_node_group_defaults.launch_template_id, null)
-  launch_template_instance_type = try(each.value.instance_type, var.eks_managed_node_group_defaults.instance_type, null)
+  launch_template_version = try(each.value.launch_template_version, var.eks_managed_node_group_defaults.launch_template_version, null)
+  launch_template_id      = try(each.value.launch_template_id, var.eks_managed_node_group_defaults.launch_template_id, null)
 
   # IAM role
-  create_iam_role               = try(each.value.create_iam_role, var.eks_managed_node_group_defaults.create_iam_role, true)
-  iam_role_arn                  = try(each.value.iam_role_arn, var.eks_managed_node_group_defaults.iam_role_arn, null)
-  iam_role_name                 = try(each.value.iam_role_name, var.eks_managed_node_group_defaults.iam_role_name, null)
-  iam_role_use_name_prefix      = try(each.value.iam_role_use_name_prefix, var.eks_managed_node_group_defaults.iam_role_use_name_prefix, true)
-  iam_role_path                 = try(each.value.iam_role_path, var.eks_managed_node_group_defaults.iam_role_path, null)
-  iam_role_description          = try(each.value.iam_role_description, var.eks_managed_node_group_defaults.iam_role_description, "EKS managed node group IAM role")
-  iam_role_permissions_boundary = try(each.value.iam_role_permissions_boundary, var.eks_managed_node_group_defaults.iam_role_permissions_boundary, null)
-  iam_role_tags                 = try(each.value.iam_role_tags, var.eks_managed_node_group_defaults.iam_role_tags, {})
-  iam_role_attach_cni_policy    = try(each.value.iam_role_attach_cni_policy, var.eks_managed_node_group_defaults.iam_role_attach_cni_policy, true)
+  iam_role_arn = try(each.value.iam_role_arn, var.eks_managed_node_group_defaults.iam_role_arn, null)
   # To better understand why this `lookup()` logic is required, see:
   # https://github.com/hashicorp/terraform/issues/31646#issuecomment-1217279031
-  iam_role_policy_attachments = lookup(each.value, "iam_role_policy_attachments", lookup(var.eks_managed_node_group_defaults, "iam_role_policy_attachments", {}))
 
   create_schedule = try(each.value.create_schedule, var.eks_managed_node_group_defaults.create_schedule, true)
   schedules       = try(each.value.schedules, var.eks_managed_node_group_defaults.schedules, {})

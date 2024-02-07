@@ -20,12 +20,6 @@ variable "platform" {
 # User Data
 ################################################################################
 
-variable "user_data" {
-  description = "Base64 encoded user data rendered for the provided inputs"
-  type        = string
-  default     = null
-}
-
 variable "enable_bootstrap_user_data" {
   description = "Determines whether the bootstrap configurations are populated within the user data template. Only valid when using a custom AMI via `ami_id`"
   type        = bool
@@ -210,70 +204,10 @@ variable "timeouts" {
 # IAM Role
 ################################################################################
 
-variable "create_iam_role" {
-  description = "Determines whether an IAM role is created or to use an existing IAM role"
-  type        = bool
-  default     = true
-}
-
-variable "cluster_ip_family" {
-  description = "The IP family used to assign Kubernetes pod and service addresses. Valid values are `ipv4` (default) and `ipv6`"
-  type        = string
-  default     = null
-}
-
 variable "iam_role_arn" {
   description = "Existing IAM role ARN for the node group. Required if `create_iam_role` is set to `false`"
   type        = string
   default     = null
-}
-
-variable "iam_role_name" {
-  description = "Name to use on IAM role created"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_use_name_prefix" {
-  description = "Determines whether the IAM role name (`iam_role_name`) is used as a prefix"
-  type        = bool
-  default     = true
-}
-
-variable "iam_role_path" {
-  description = "IAM role path"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_description" {
-  description = "Description of the role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_permissions_boundary" {
-  description = "ARN of the policy that is used to set the permissions boundary for the IAM role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_attach_cni_policy" {
-  description = "Whether to attach the `AmazonEKS_CNI_Policy`/`AmazonEKS_CNI_IPv6_Policy` IAM policy to the IAM IAM role. WARNING: If set `false` the permissions must be assigned to the `aws-node` DaemonSet pods via another method or nodes will not be able to join the cluster"
-  type        = bool
-  default     = true
-}
-
-variable "iam_role_policy_attachments" {
-  description = "IAM role policy attachments"
-  type        = map(string)
-  default     = {}
-}
-
-variable "iam_role_tags" {
-  description = "A map of additional tags to add to the IAM role created"
-  type        = map(string)
-  default     = {}
 }
 
 ################################################################################
@@ -290,11 +224,6 @@ variable "schedules" {
   description = "Map of autoscaling group schedule to create"
   type        = map(any)
   default     = {}
-}
-
-variable "launch_template_instance_type" {
-  description = "Instance type to use for the launch template"
-  type        = string
 }
 
 variable "vpc_id" {

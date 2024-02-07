@@ -146,21 +146,6 @@ variable "create_cni_ipv6_iam_policy" {
 }
 
 ################################################################################
-# Node Security Group
-################################################################################
-variable "node_security_group_id" {
-  description = "ID of an existing security group to attach to the node groups created"
-  type        = string
-  default     = ""
-}
-
-variable "node_security_group_name" {
-  description = "Name to use on node security group created"
-  type        = string
-  default     = null
-}
-
-################################################################################
 # IRSA
 ################################################################################
 

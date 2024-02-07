@@ -182,4 +182,3 @@ output "eks_managed_node_groups_autoscaling_group_names" {
   description = "List of the autoscaling group names created by EKS managed node groups"
   value       = compact(flatten([for group in module.eks_managed_node_group : group.node_group_autoscaling_group_names]))
 }
-

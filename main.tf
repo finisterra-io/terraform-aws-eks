@@ -1,19 +1,11 @@
 data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_session_context" "current" {
-  # This data source provides information on the IAM source role of an STS assumed role
-  # For non-role ARNs, this data source simply passes the ARN through issuer ARN
-  # Ref https://github.com/terraform-aws-modules/terraform-aws-eks/issues/2327#issuecomment-1355581682
-  # Ref https://github.com/hashicorp/terraform-provider-aws/issues/28381
-  arn = data.aws_caller_identity.current.arn
-}
 
 locals {
   create = var.create
 
-  create_outposts_local_cluster    = length(var.outpost_config) > 0
-  enable_cluster_encryption_config = length(var.cluster_encryption_config) > 0 && !local.create_outposts_local_cluster
+  create_outposts_local_cluster = length(var.outpost_config) > 0
 }
 
 ################################################################################

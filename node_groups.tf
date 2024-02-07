@@ -1,21 +1,7 @@
 locals {
-  metadata_options = {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 2
-  }
-
   # EKS managed node group
   default_update_config = {
     max_unavailable_percentage = 33
-  }
-
-  # Self-managed node group
-  default_instance_refresh = {
-    strategy = "Rolling"
-    preferences = {
-      min_healthy_percentage = 66
-    }
   }
 }
 
@@ -76,19 +62,6 @@ resource "aws_iam_policy" "cni_ipv6_policy" {
   policy      = data.aws_iam_policy_document.cni_ipv6_policy[0].json
 
   tags = var.tags
-}
-
-################################################################################
-# Node Security Group
-# Defaults follow https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
-# Plus NTP/HTTPS (otherwise nodes fail to launch)
-################################################################################
-
-locals {
-  node_sg_name = coalesce(var.node_security_group_name, "${var.cluster_name}-node")
-
-  node_security_group_id = var.node_security_group_id
-
 }
 
 ################################################################################

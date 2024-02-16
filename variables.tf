@@ -104,12 +104,6 @@ variable "create_cluster_primary_security_group_tags" {
   default     = true
 }
 
-variable "cluster_timeouts" {
-  description = "Create, update, and delete timeout configurations for the cluster"
-  type        = map(string)
-  default     = {}
-}
-
 ################################################################################
 # CloudWatch Log Group
 ################################################################################

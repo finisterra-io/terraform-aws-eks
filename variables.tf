@@ -47,7 +47,7 @@ variable "subnet_ids" {
 variable "cluster_endpoint_private_access" {
   description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled"
   type        = bool
-  default     = true
+  default     = null
 }
 
 variable "cluster_endpoint_public_access" {
@@ -102,12 +102,6 @@ variable "create_cluster_primary_security_group_tags" {
   description = "Indicates whether or not to tag the cluster's primary security group. This security group is created by the EKS service, not the module, and therefore tagging is handled after cluster creation"
   type        = bool
   default     = true
-}
-
-variable "cluster_timeouts" {
-  description = "Create, update, and delete timeout configurations for the cluster"
-  type        = map(string)
-  default     = {}
 }
 
 ################################################################################

@@ -61,13 +61,6 @@ resource "aws_eks_cluster" "this" {
 
   tags = var.cluster_tags
 
-
-  timeouts {
-    create = lookup(var.cluster_timeouts, "create", null)
-    update = lookup(var.cluster_timeouts, "update", null)
-    delete = lookup(var.cluster_timeouts, "delete", null)
-  }
-
   depends_on = [
     aws_cloudwatch_log_group.this,
   ]

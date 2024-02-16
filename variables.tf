@@ -47,7 +47,7 @@ variable "subnet_ids" {
 variable "cluster_endpoint_private_access" {
   description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled"
   type        = bool
-  default     = true
+  default     = null
 }
 
 variable "cluster_endpoint_public_access" {

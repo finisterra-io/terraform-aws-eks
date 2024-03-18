@@ -29,7 +29,7 @@ variable "cluster_version" {
 variable "cluster_enabled_log_types" {
   description = "A list of the desired control plane logs to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)"
   type        = list(string)
-  default     = []
+  default     = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
 }
 
 variable "cluster_security_group_ids" {
@@ -88,8 +88,16 @@ variable "outpost_config" {
 
 variable "cluster_encryption_config" {
   description = "Configuration block with encryption configuration for the cluster. To disable secret encryption, set this value to `{}`"
-  type        = any
-  default     = {}
+  type = object({
+    provider = list(object({
+      key_arn = string
+    }))
+    resources = list(string)
+  })
+  default = {
+    provider  = []
+    resources = ["secrets"]
+  }
 }
 
 variable "cluster_tags" {

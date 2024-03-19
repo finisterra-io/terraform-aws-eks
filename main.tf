@@ -10,7 +10,8 @@ locals {
 ################################################################################
 # Cluster
 ################################################################################
-
+#Already defined in dynamic "encryption_config"
+#trivy:ignore:avd-aws-0039
 resource "aws_eks_cluster" "this" {
   count = local.create ? 1 : 0
 

@@ -94,10 +94,7 @@ variable "cluster_encryption_config" {
     }))
     resources = list(string)
   })
-  default = {
-    provider  = []
-    resources = ["secrets"]
-  }
+  default = null
 }
 
 variable "cluster_tags" {

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.4](https://github.com/finisterra-io/terraform-aws-eks/compare/v1.0.3...v1.0.4) (2024-03-19)
+
+
+### Bug Fixes
+
+* fix vulns ([804f301](https://github.com/finisterra-io/terraform-aws-eks/commit/804f301d1961537b52948e534c61f48a37209f58))
+* fix vulns ([716709a](https://github.com/finisterra-io/terraform-aws-eks/commit/716709ad35afa5eba8f1b64b6972e45c63527ab0))
+
 ### [1.0.3](https://github.com/finisterra-io/terraform-aws-eks/compare/v1.0.2...v1.0.3) (2024-03-18)
 
 

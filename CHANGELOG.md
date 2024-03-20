@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.6](https://github.com/finisterra-io/terraform-aws-eks/compare/v1.0.5...v1.0.6) (2024-03-20)
+
+
+### Bug Fixes
+
+* update default logging ([434fa37](https://github.com/finisterra-io/terraform-aws-eks/commit/434fa3780e030b40149b1b1d1d5d192712b7d67f))
+
 ### [1.0.5](https://github.com/finisterra-io/terraform-aws-eks/compare/v1.0.4...v1.0.5) (2024-03-20)
 
 

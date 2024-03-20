@@ -50,7 +50,7 @@ resource "aws_eks_cluster" "this" {
 
   dynamic "encryption_config" {
     # Not available on Outposts
-    for_each = length(var.cluster_encryption_config) > 0 ? [var.cluster_encryption_config] : []
+    for_each = var.cluster_encryption_config != null ? [var.cluster_encryption_config] : []
 
     content {
       provider {

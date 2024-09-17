@@ -91,7 +91,7 @@ module "eks_managed_node_group" {
   max_size     = try(each.value.max_size, var.eks_managed_node_group_defaults.max_size, 3)
   desired_size = try(each.value.desired_size, var.eks_managed_node_group_defaults.desired_size, 1)
 
-  ami_type            = try(each.value.ami_type, var.eks_managed_node_group_defaults.ami_type, null)
+  # ami_type            = try(each.value.ami_type, var.eks_managed_node_group_defaults.ami_type, null)
   ami_release_version = try(each.value.ami_release_version, var.eks_managed_node_group_defaults.ami_release_version, null)
 
   capacity_type        = try(each.value.capacity_type, var.eks_managed_node_group_defaults.capacity_type, null)

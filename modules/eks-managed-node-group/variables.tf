@@ -120,11 +120,11 @@ variable "use_name_prefix" {
   default     = true
 }
 
-variable "ami_type" {
-  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
-  type        = string
-  default     = null
-}
+# variable "ami_type" {
+#   description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
+#   type        = string
+#   default     = null
+# }
 
 variable "ami_release_version" {
   description = "AMI version of the EKS Node Group. Defaults to latest version for Kubernetes version"

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.7](https://github.com/finisterra-io/terraform-aws-eks/compare/v1.0.6...v1.0.7) (2024-09-17)
+
+
+### Bug Fixes
+
+* ami-type ([42ff470](https://github.com/finisterra-io/terraform-aws-eks/commit/42ff47035491e9a9ad134a7956dfad04d053a617))
+* ami-type ([06d5455](https://github.com/finisterra-io/terraform-aws-eks/commit/06d5455a16d4ccc6ec53d641f9183c9e4bf1a860))
+* ami-type ([2019dee](https://github.com/finisterra-io/terraform-aws-eks/commit/2019dee03df31616f45daa46aa33b418d3968eaf))
+
 ### [1.0.6](https://github.com/finisterra-io/terraform-aws-eks/compare/v1.0.5...v1.0.6) (2024-03-20)
 
 

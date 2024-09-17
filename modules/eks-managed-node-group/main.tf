@@ -44,7 +44,7 @@ resource "aws_eks_node_group" "this" {
   node_group_name_prefix = var.use_name_prefix ? "${var.name}-" : null
 
   # https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-custom-ami
-  ami_type        = var.ami_type
+  # ami_type        = var.ami_type
   release_version = var.ami_release_version
   version         = var.cluster_version
 
@@ -101,6 +101,7 @@ resource "aws_eks_node_group" "this" {
     create_before_destroy = true
     ignore_changes = [
       scaling_config[0].desired_size,
+      ami_type,
     ]
   }
 
